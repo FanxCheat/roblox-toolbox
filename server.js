@@ -26,7 +26,14 @@ app.get('/search', async (req, res) => {
         const results = (data.data || []).map(item => ({
             id: item.id,
             name: item.name,
-            thumbnail: `https://tr.rbxcdn.com/${item.id}/150/150/Image/Png`
+          async function getThumbnails(assetIds) {
+    const url = `https://thumbnails.roblox.com/v1/assets?assetIds=${assetIds.join(",")}&size=150x150&format=Png`;
+    
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    return data.data || [];
+}
         }));
         
         res.json({ results, totalPages: data.totalPages || 1 });
@@ -51,7 +58,14 @@ app.get('/popular', async (req, res) => {
         const results = (data.data || []).map(item => ({
             id: item.id,
             name: item.name,
-            thumbnail: `https://tr.rbxcdn.com/${item.id}/150/150/Image/Png`
+            async function getThumbnails(assetIds) {
+    const url = `https://thumbnails.roblox.com/v1/assets?assetIds=${assetIds.join(",")}&size=150x150&format=Png`;
+    
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    return data.data || [];
+}
         }));
         
         res.json(results);
