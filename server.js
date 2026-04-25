@@ -5,10 +5,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Поиск ассетов
+// 1. ПУТЬ ПОИСКА (работает)
 app.get('/search', async (req, res) => {
     const query = req.query.q || '';
-    const page = req.query.page || 1;
+    const page = parseInt(req.query.page) || 1;
     const limit = 50;
     const offset = (page - 1) * limit;
     
@@ -35,7 +35,7 @@ app.get('/search', async (req, res) => {
     }
 });
 
-// Популярные ассеты
+// 2. ПУТЬ ПОПУЛЯРНЫХ (работает)
 app.get('/popular', async (req, res) => {
     const url = `https://catalog.roblox.com/v1/search/items?category=Models&sortType=3&limit=50`;
     
@@ -58,6 +58,11 @@ app.get('/popular', async (req, res) => {
     } catch (error) {
         res.json([]);
     }
+});
+
+// 3. ГЛАВНАЯ СТРАНИЦА (чтобы не было 404)
+app.get('/', (req, res) => {
+    res.send('Roblox Toolbox Proxy Server is running! Use /search?q=sword or /popular');
 });
 
 app.listen(PORT, () => {
